@@ -23,7 +23,12 @@ public class ApiV1ChatMessageController {
 
     @GetMapping("/{roomId}/messages")
     public RsData<ChatMessagesResponse> getMessagesAfterMessageId(@PathVariable("roomId") Long roomId, @RequestParam("afterChatMessageId") Long afterChatMessageId) {
-        List<ChatMessageDto> chatMessageDtos = chatMessageService.findMessagesAfterId(roomId, afterChatMessageId);
+        ChatRoom chatRoom = chatRoomService.findById(roomId);
+        if(chatRoom == null) {
+            return RsData.of("500", "%d번 채팅방의 %d 이후 메시지 조회 실패".formatted(roomId, afterChatMessageId), null);
+        }
+
+        List<ChatMessageDto> chatMessageDtos = chatMessageService.findMessagesAfterId(chatRoom, afterChatMessageId);
 
         return RsData.of("200", "%d번 채팅방의 %d 이후 메시지 조회 완료".formatted(roomId, afterChatMessageId), new ChatMessagesResponse(chatMessageDtos));
     }

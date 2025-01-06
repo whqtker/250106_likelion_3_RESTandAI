@@ -6,6 +6,7 @@ import ai.OpenAI.domain.chatRoom.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,6 +33,7 @@ public class ChatRoomService {
     public ChatRoom save(String name){
         ChatRoom chatRoom = ChatRoom.builder()
                 .name(name)
+                .chatMessages(new ArrayList<>())
                 .build();
         this.chatRoomRepository.save(chatRoom);
 
