@@ -27,4 +27,11 @@ public class ArticleService {
         Article article = articleRepository.findById(id).orElse(null);
         return RsData.of("200", "글 조회 성공", article);
     }
+
+    public RsData<Article> modify(Article article, String title, String content) {
+        article.setTitle(title);
+        article.setContent(content);
+        articleRepository.save(article);
+        return RsData.of("200", "글 수정 성공", article);
+    }
 }
