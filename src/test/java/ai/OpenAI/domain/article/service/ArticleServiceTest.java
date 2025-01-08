@@ -4,10 +4,12 @@ import ai.OpenAI.domain.article.entity.Article;
 import ai.OpenAI.domain.global.rsData.RsData;
 import ai.OpenAI.domain.global.ut.Ut;
 import ai.OpenAI.domain.member.entity.Member;
+import ai.OpenAI.domain.member.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +21,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class ArticleServiceTest {
     @Autowired
     private ArticleService articleService;
+    @Autowired
+    private MemberService memberService;
 
     @DisplayName("글 쓰기")
     @Test
@@ -57,5 +61,15 @@ public class ArticleServiceTest {
         Article article_ = articleService.findById(1L).getData();
 
         assertThat(article_.getTitle()).isEqualTo("수정된 제목");
+    }
+
+    @DisplayName("2번 글에 댓글들을 추가한다.")
+    @Test
+    @Rollback(false) // 테스트 종료 후 롤백하지 않음, 즉, 결과에 반영함.
+    void t5() {
+        Member member1 = memberService.findById(1L).getData();
+        Article article2 = articleService.findById(2L).getData();
+
+        article2.addComment(member1, "댓글 입니다.");
     }
 }

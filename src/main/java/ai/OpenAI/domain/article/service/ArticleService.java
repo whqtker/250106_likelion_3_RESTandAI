@@ -6,12 +6,15 @@ import ai.OpenAI.domain.global.rsData.RsData;
 import ai.OpenAI.domain.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ArticleService {
     private final ArticleRepository articleRepository;
 
+    @Transactional
     public RsData<Article> write(Long id, String title, String content) {
         Article article = Article.builder()
                 .author(Member.builder().id(id).build())
@@ -28,6 +31,7 @@ public class ArticleService {
         return RsData.of("200", "글 조회 성공", article);
     }
 
+    @Transactional
     public RsData<Article> modify(Article article, String title, String content) {
         article.setTitle(title);
         article.setContent(content);

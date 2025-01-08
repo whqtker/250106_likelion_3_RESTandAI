@@ -20,4 +20,9 @@ public class MemberService {
         memberRepository.save(member);
         return RsData.of("200", "%s님 회원가입 성공".formatted(userName), member);
     }
+
+    public RsData<Member> findById(Long id) {
+        Member member = memberRepository.findById(id).orElse(null);
+        return RsData.of("200", "회원 조회 성공", member);
+    }
 }

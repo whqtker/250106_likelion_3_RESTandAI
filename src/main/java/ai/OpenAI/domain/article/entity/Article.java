@@ -1,11 +1,17 @@
 package ai.OpenAI.domain.article.entity;
 
+import ai.OpenAI.domain.comment.entity.Comment;
 import ai.OpenAI.domain.global.jpa.BaseEntity;
 import ai.OpenAI.domain.member.entity.Member;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,4 +26,18 @@ public class Article extends BaseEntity {
 
     @ManyToOne
     private Member author;
+
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+    @Builder.Default
+    @ToString.Exclude // 무한 순환 참조를 방지하기 위해
+    private List<Comment> comments = new ArrayList<>();
+
+    public void addComment(Member member, String content) {
+        Comment comment = Comment.builder()
+                .author(member)
+                .article(this)
+                .content(content)
+                .build();
+        comments.add(comment);
+    }
 }
