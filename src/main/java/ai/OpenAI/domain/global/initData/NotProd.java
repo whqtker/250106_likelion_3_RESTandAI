@@ -1,5 +1,7 @@
 package ai.OpenAI.domain.global.initData;
 
+import ai.OpenAI.domain.article.entity.Article;
+import ai.OpenAI.domain.article.service.ArticleService;
 import ai.OpenAI.domain.chatMessage.service.ChatMessageService;
 import ai.OpenAI.domain.chatRoom.entity.ChatRoom;
 import ai.OpenAI.domain.chatRoom.service.ChatRoomService;
@@ -16,7 +18,8 @@ import java.util.stream.IntStream;
 @Profile("!prod")
 public class NotProd {
     @Bean
-    public ApplicationRunner initNotProd(ChatRoomService chatRoomService, ChatMessageService chatMessageService, MemberService memberService) {
+    public ApplicationRunner initNotProd(ChatRoomService chatRoomService, ChatMessageService chatMessageService,
+                                         MemberService memberService, ArticleService articleService) {
         return args -> {
             ChatRoom chatroom1 = chatRoomService.save("공부");
             ChatRoom chatroom2 = chatRoomService.save("운동");
@@ -30,7 +33,14 @@ public class NotProd {
 
             Member member1 = memberService.join("user1", "1234").getData();
             Member member2 = memberService.join("user2", "1234").getData();
-            Member member3 = memberService.join("user3", "1234").getData();        };
+            Member member3 = memberService.join("user3", "1234").getData();
+
+            Article article1 = articleService.write(member1.getId(), "제목1", "내용1").getData();
+            Article article2 = articleService.write(member1.getId(), "제목2", "내용2").getData();
+
+            Article article3 = articleService.write(member2.getId(), "제목3", "내용3").getData();
+            Article article4 = articleService.write(member2.getId(), "제목4", "내용4").getData();
+        };
 
     }
 }

@@ -3,6 +3,7 @@ package ai.OpenAI.domain.article.service;
 import ai.OpenAI.domain.article.entity.Article;
 import ai.OpenAI.domain.article.repository.ArticleRepository;
 import ai.OpenAI.domain.global.rsData.RsData;
+import ai.OpenAI.domain.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,8 +12,9 @@ import org.springframework.stereotype.Service;
 public class ArticleService {
     private final ArticleRepository articleRepository;
 
-    public RsData<Article> write(String title, String content) {
+    public RsData<Article> write(Long id, String title, String content) {
         Article article = Article.builder()
+                .member(Member.builder().id(id).build())
                 .title(title)
                 .content(content)
                 .build();
