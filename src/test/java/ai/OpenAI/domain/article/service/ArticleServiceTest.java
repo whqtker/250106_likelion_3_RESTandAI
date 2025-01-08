@@ -72,4 +72,24 @@ public class ArticleServiceTest {
 
         article2.addComment(member1, "댓글 입니다.");
     }
+
+    @DisplayName("1번 글의 댓글들을 수정한다.")
+    @Test
+    void t6() {
+        Article article = articleService.findById(1L).getData();
+
+        article.getComments().forEach(comment -> {
+            articleService.modifyComment(comment, comment.getContent() + "!!");
+        });
+    }
+
+//    @DisplayName("1번 글의 댓글 중 마지막 것을 삭제한다.")
+//    @Test
+//    void t7() {
+//        Article article = articleService.findById(1L).get();
+//
+//        ArticleComment lastComment = article.getComments().getLast();
+//
+//        article.removeComment(lastComment);
+//    }
 }

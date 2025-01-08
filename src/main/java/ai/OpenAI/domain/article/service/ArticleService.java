@@ -2,6 +2,7 @@ package ai.OpenAI.domain.article.service;
 
 import ai.OpenAI.domain.article.entity.Article;
 import ai.OpenAI.domain.article.repository.ArticleRepository;
+import ai.OpenAI.domain.comment.entity.Comment;
 import ai.OpenAI.domain.global.rsData.RsData;
 import ai.OpenAI.domain.member.entity.Member;
 import lombok.RequiredArgsConstructor;
@@ -37,5 +38,11 @@ public class ArticleService {
         article.setContent(content);
         articleRepository.save(article);
         return RsData.of("200", "글 수정 성공", article);
+    }
+
+    @Transactional
+    public RsData<Comment> modifyComment(Comment comment, String content) {
+        comment.setContent(content);
+        return RsData.of("200", "댓글 수정 성공", comment);
     }
 }
