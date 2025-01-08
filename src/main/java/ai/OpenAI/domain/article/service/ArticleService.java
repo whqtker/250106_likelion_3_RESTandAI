@@ -14,12 +14,17 @@ public class ArticleService {
 
     public RsData<Article> write(Long id, String title, String content) {
         Article article = Article.builder()
-                .member(Member.builder().id(id).build())
+                .author(Member.builder().id(id).build())
                 .title(title)
                 .content(content)
                 .build();
 
         articleRepository.save(article);
         return RsData.of("200", "글 작성 성공", article);
+    }
+
+    public RsData<Article> findById(Long id) {
+        Article article = articleRepository.findById(id).orElse(null);
+        return RsData.of("200", "글 조회 성공", article);
     }
 }

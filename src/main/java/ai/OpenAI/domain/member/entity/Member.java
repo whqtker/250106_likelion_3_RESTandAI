@@ -20,6 +20,6 @@ public class Member extends BaseEntity {
     private String userName;
     private String password;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "author")
     private List<Article> articles;
 }

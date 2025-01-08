@@ -2,6 +2,7 @@ package ai.OpenAI.domain.article.service;
 
 import ai.OpenAI.domain.article.entity.Article;
 import ai.OpenAI.domain.global.rsData.RsData;
+import ai.OpenAI.domain.member.entity.Member;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +26,21 @@ public class ArticleServiceTest {
         Article article = writeRs.getData();
 
         assertThat(article.getId()).isGreaterThan(0L);
+    }
+
+    @DisplayName("1번 글을 가져온다.")
+    @Test
+    void t2() {
+        Article article = articleService.findById(1L).getData();
+        assertThat(article.getTitle()).isEqualTo("제목1");
+    }
+
+    @DisplayName("1번 글의 작성자의 username 은 user1 이다.")
+    @Test
+    void t3() {
+        Article article = articleService.findById(1L).getData();
+        Member author = article.getAuthor();
+
+        assertThat(author.getUserName()).isEqualTo("user1");
     }
 }
