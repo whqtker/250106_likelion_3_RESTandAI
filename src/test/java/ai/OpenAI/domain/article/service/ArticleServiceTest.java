@@ -1,6 +1,7 @@
 package ai.OpenAI.domain.article.service;
 
 import ai.OpenAI.domain.article.entity.Article;
+import ai.OpenAI.domain.comment.entity.Comment;
 import ai.OpenAI.domain.global.rsData.RsData;
 import ai.OpenAI.domain.global.ut.Ut;
 import ai.OpenAI.domain.member.entity.Member;
@@ -83,13 +84,15 @@ public class ArticleServiceTest {
         });
     }
 
-//    @DisplayName("1번 글의 댓글 중 마지막 것을 삭제한다.")
-//    @Test
-//    void t7() {
-//        Article article = articleService.findById(1L).get();
-//
-//        ArticleComment lastComment = article.getComments().getLast();
-//
-//        article.removeComment(lastComment);
-//    }
+    @DisplayName("1번 글의 댓글 중 마지막 것을 삭제한다.")
+    @Test
+    void t7() {
+        Article article = articleService.findById(1L).getData();
+
+        // t7 단독 수행 시 댓글이 없기 때문에 에러 발생 -> 댓글 임시 추가
+        article.addComment(memberService.findById(1L).getData(), "댓글 추가");
+
+        Comment lastComment = article.getComments().get(article.getComments().size() - 1);
+        article.removeComment(lastComment);
+    }
 }
