@@ -87,6 +87,7 @@ public class ArticleServiceTest {
     void t6() {
         Article article = articleService.findById(1L).getData();
 
+        // 댓글들을 순회하며 수정
         article.getComments().forEach(comment -> {
             articleService.modifyComment(comment, comment.getContent() + "!!");
         });
@@ -100,6 +101,7 @@ public class ArticleServiceTest {
         // t7 단독 수행 시 댓글이 없기 때문에 에러 발생 -> 댓글 임시 추가
         article.addComment(memberService.findById(1L).getData(), "댓글 추가");
 
+        // 자바 17은 getLast() 메서드를 지원하지 않음.
         Comment lastComment = article.getComments().get(article.getComments().size() - 1);
         article.removeComment(lastComment);
     }
