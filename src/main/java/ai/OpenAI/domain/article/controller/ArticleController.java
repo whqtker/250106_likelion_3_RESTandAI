@@ -21,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ArticleController {
     private final ArticleService articleService;
+
     @GetMapping("/list")
     public String list(
             @RequestParam(value = "page", defaultValue = "0") int page,

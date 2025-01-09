@@ -25,6 +25,7 @@ public class Article extends BaseEntity {
 
     // profile에서 N+1 문제를 해결했으므로
     @ManyToOne(fetch = FetchType.LAZY) // default: FetchType.EAGER
+    @ToString.Exclude
     private Member author;
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true) // default: FetchType.LAZY
