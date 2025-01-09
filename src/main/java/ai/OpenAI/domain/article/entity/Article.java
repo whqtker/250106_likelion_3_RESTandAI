@@ -25,10 +25,10 @@ public class Article extends BaseEntity {
     private String title;
     private String content;
 
-    @ManyToOne
+    @ManyToOne // default: FetchType.EAGER
     private Member author;
 
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL) // default: FetchType.LAZY
     @Builder.Default // 빌더에 기본값 포함, 없으면 comments가 null로 초기화됨.
     @ToString.Exclude // 무한 순환 참조를 방지하기 위해
     private List<Comment> comments = new ArrayList<>();

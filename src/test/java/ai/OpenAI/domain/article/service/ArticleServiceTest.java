@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
-@ActiveProfiles("test")
+@ActiveProfiles({"test", "dev"})
 @Transactional
 public class ArticleServiceTest {
     @Autowired
