@@ -6,6 +6,8 @@ import ai.OpenAI.domain.comment.entity.Comment;
 import ai.OpenAI.domain.global.rsData.RsData;
 import ai.OpenAI.domain.member.entity.Member;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,6 +57,11 @@ public class ArticleService {
     }
 
     public RsData<List<Article>> findAll(){
-        return RsData.of("200", "글 전체 조회 성공", articleRepository.findAll());
+        return RsData.of("200", "글 전체 조회 성공",
+                articleRepository.findAll());
+    }
+
+    public Page<Article> search(Pageable pageable) {
+        return articleRepository.findAll(pageable);
     }
 }
