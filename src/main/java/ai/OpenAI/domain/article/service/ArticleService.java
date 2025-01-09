@@ -38,6 +38,7 @@ public class ArticleService {
         article.setContent(content);
 
         // JPA의 영속성 컨텍스트가 변경을 감지하여 알아서 update 쿼리를 날려줌: dirty checking
+        // 트랜잭션이 안 걸려있다면 update 쿼리가 날라가지 않음.
         // articleRepository.save(article);
 
         return RsData.of("200", "글 수정 성공", article);
