@@ -51,12 +51,15 @@ public class Article extends BaseEntity {
         comments.remove(comment);
     }
 
-    public void addTag(String contents) {
-        Tag tag = Tag.builder()
-                .article(this)
-                .content(content)
-                .build();
+    // 가변인자를 사용하여 여러 태그를 한번에 추가할 수 있도록 함
+    public void addTag(String... contents) {
+        for (String content : contents) {
+            Tag tag = Tag.builder()
+                    .article(this)
+                    .content(content)
+                    .build();
 
-        tags.add(tag);
+            tags.add(tag);
+        }
     }
 }
