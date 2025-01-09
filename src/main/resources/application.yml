@@ -4,6 +4,8 @@ spring:
   profiles:
     active: dev
     include: secret
+  thymeleaf:
+    cache: false
   logging:
     level:
       com.ll.OpenAi: DEBUG
