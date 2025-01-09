@@ -139,7 +139,7 @@ public class ArticleServiceTest {
 //    @DisplayName("1번 회원이 작성한 댓글들")
 //    @Test
 //    void t11() {
-//        List<Comment> articleComments = CommentService.findByAuthorId(1L);
+//        List<Comment> articleComments = CommentService.findByAuthorId(1L).getData();
 //
 //        assertThat(articleComments.size()).isGreaterThan(0);
 //    }

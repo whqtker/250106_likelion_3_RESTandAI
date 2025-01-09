@@ -13,9 +13,9 @@ import java.util.List;
 public class CommentService {
     private final CommentRepository commentRepository;
 
-//    public RsData<List<Comment>> findByAuthorId(Long authorId) {
-//        List<Comment> comments = commentRepository.findByAuthorId(authorId);
-//
-//        return RsData.of("200", "댓글 조회 성공", comments);
-//    }
+    public RsData<List<Comment>> findByAuthorId(Long authorId) {
+        List<Comment> comments = commentRepository.findByAuthorId(authorId);
+
+        return RsData.of("200", "댓글 조회 성공", comments);
+    }
 }
