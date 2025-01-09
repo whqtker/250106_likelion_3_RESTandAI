@@ -11,6 +11,7 @@ import lombok.experimental.SuperBuilder;
 import javax.swing.text.AbstractDocument;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -63,5 +64,19 @@ public class Article extends BaseEntity {
 
             tags.add(tag);
         }
+    }
+
+    public String getTagsStr() {
+        String tagsStr = tags
+                .stream()
+                .map(Tag::getContent)
+                .collect(Collectors.joining(" #"));
+
+        if (tagsStr.isBlank()) {
+            return "";
+        }
+
+        return "#" + tagsStr;
+
     }
 }
