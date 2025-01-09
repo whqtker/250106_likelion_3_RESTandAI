@@ -19,4 +19,10 @@ public class TagService {
 
         return RsData.of("200", "댓글 조회 성공", tags);
     }
+
+    public RsData<List<Tag>> findByAuthorUserName(String userName) {
+        List<Tag> tags = tagRepository.findByAuthorUserName(userName);
+
+        return RsData.of("200", "댓글 조회 성공", tags);
+    }
 }
