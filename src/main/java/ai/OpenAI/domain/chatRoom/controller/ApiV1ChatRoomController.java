@@ -8,11 +8,10 @@ import ai.OpenAI.domain.chatRoom.response.ChatRoomResponse;
 import ai.OpenAI.domain.chatRoom.response.ChatRoomsResponse;
 import ai.OpenAI.domain.chatRoom.service.ChatRoomService;
 import ai.OpenAI.domain.global.rsData.RsData;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -20,7 +19,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @CrossOrigin(origins = "https://cdpn.io")
 public class ApiV1ChatRoomController {
-    private final OpenAiChatModel openAiChatModel;
     private final ChatRoomService chatRoomService;
 
     @GetMapping("")

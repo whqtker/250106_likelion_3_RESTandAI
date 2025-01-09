@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ArticleRepository extends JpaRepository<Article, Long> {
+public interface ArticleRepository extends JpaRepository<Article, Long>, ArticleRepositoryCustom {
     List<Article> findByOrderByIdDesc();
     Page<Article> findByTitleContainingOrContentContaining(String kw, String kw_, Pageable pageable);
     Page<Article> findByTitleContaining(String kw, Pageable pageable);

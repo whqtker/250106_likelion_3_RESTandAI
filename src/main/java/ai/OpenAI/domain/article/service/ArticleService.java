@@ -66,27 +66,6 @@ public class ArticleService {
     }
 
     public Page<Article> search(List<String> kwTypes, String kw, Pageable pageable) {
-        if (
-                kwTypes.contains("authorUserName") &&
-                        kwTypes.contains("title") &&
-                        kwTypes.contains("content") &&
-                        kwTypes.contains("tagContent") &&
-                        kwTypes.contains("commentAuthorUserName") &&
-                        kwTypes.contains("commentContent")
-        ) {
-            return articleRepository.findByAuthor_userNameContainingOrTitleContainingOrContentContainingOrTags_contentOrComments_author_userNameContainingOrComments_contentContaining(kw, kw, kw, kw, kw, kw, pageable);
-        } else if (kwTypes.contains("authorUserName") && kwTypes.contains("title") && kwTypes.contains("content")) {
-            return articleRepository.findByAuthor_userNameContainingOrTitleContainingOrContentContaining(kw, kw, kw, pageable);
-        } else if (kwTypes.contains("title") && kwTypes.contains("content")) {
-            return articleRepository.findByTitleContainingOrContentContaining(kw, kw, pageable);
-        } else if (kwTypes.contains("title")) {
-            return articleRepository.findByTitleContaining(kw, pageable);
-        } else if (kwTypes.contains("content")) {
-            return articleRepository.findByContentContaining(kw, pageable);
-        } else if (kwTypes.contains("authorUserName")) {
-            return articleRepository.findByAuthor_userNameContaining(kw, pageable);
-        }
-
-        return articleRepository.findAll(pageable);
+        return articleRepository.search(kwTypes, kw, pageable);
     }
 }
