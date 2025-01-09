@@ -8,6 +8,7 @@ import ai.OpenAI.domain.global.ut.Ut;
 import ai.OpenAI.domain.member.entity.Member;
 import ai.OpenAI.domain.member.service.MemberService;
 import ai.OpenAI.domain.tag.entity.Tag;
+import ai.OpenAI.domain.tag.service.TagService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,8 @@ public class ArticleServiceTest {
     private MemberService memberService;
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private TagService tagService;
 
     @DisplayName("글 쓰기")
     @Test
@@ -136,21 +139,21 @@ public class ArticleServiceTest {
         System.out.println(article1);
     }
 
-//    @DisplayName("1번 회원이 작성한 댓글들")
-//    @Test
-//    void t11() {
-//        List<Comment> articleComments = CommentService.findByAuthorId(1L).getData();
-//
-//        assertThat(articleComments.size()).isGreaterThan(0);
-//    }
+    @DisplayName("1번 회원이 작성한 댓글들")
+    @Test
+    void t11() {
+        List<Comment> articleComments = commentService.findByAuthorId(1L).getData();
 
-//    @DisplayName("1번 회원이 작성한 태그들")
-//    @Test
-//    void t12() {
-//        List<ArticleTag> articleTags = articleTagService.findByAuthorId(1L);
-//
-//        assertThat(articleTags.size()).isGreaterThan(0);
-//    }
+        assertThat(articleComments.size()).isGreaterThan(0);
+    }
+
+    @DisplayName("1번 회원이 작성한 태그들")
+    @Test
+    void t12() {
+        List<Tag> articleTags = tagService.findByAuthorId(1L).getData();
+
+        assertThat(articleTags.size()).isGreaterThan(0);
+    }
 //
 //    @DisplayName("아이디가 user1 인 회원이 작성한 태그들")
 //    @Test

@@ -56,6 +56,7 @@ public class Article extends BaseEntity {
         for (String content : contents) {
             Tag tag = Tag.builder()
                     .article(this)
+                    .author(this.author)
                     .content(content)
                     .build();
 

@@ -2,6 +2,7 @@ package ai.OpenAI.domain.member.entity;
 
 import ai.OpenAI.domain.article.entity.Article;
 import ai.OpenAI.domain.global.jpa.BaseEntity;
+import ai.OpenAI.domain.tag.entity.Tag;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import lombok.*;
@@ -22,4 +23,7 @@ public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "author")
     private List<Article> articles;
+
+    @OneToMany
+    private List<Tag> tags;
 }

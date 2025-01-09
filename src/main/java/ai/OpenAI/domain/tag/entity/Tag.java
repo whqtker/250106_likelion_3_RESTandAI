@@ -2,6 +2,7 @@ package ai.OpenAI.domain.tag.entity;
 
 import ai.OpenAI.domain.article.entity.Article;
 import ai.OpenAI.domain.global.jpa.BaseEntity;
+import ai.OpenAI.domain.member.entity.Member;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
@@ -20,4 +21,7 @@ public class Tag extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Article article;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member author;
 }
