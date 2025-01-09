@@ -61,14 +61,15 @@ public class ArticleServiceTest {
     @Test
     void t4() {
         Article article = articleService.findById(1L).getData();
+        String title = article.getTitle();
 
         //Ut.thread.sleep(1000);
 
-        articleService.modify(article, "수정된 제목", "수정된 내용");
+        articleService.modify(article, title + "!", "수정된 내용");
 
         Article article_ = articleService.findById(1L).getData();
 
-        assertThat(article_.getTitle()).isEqualTo("수정된 제목");
+        assertThat(article_.getTitle()).isEqualTo(title + "!");
     }
 
     @DisplayName("2번 글에 댓글들을 추가한다.")
