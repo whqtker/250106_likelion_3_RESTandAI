@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import javax.swing.text.AbstractDocument;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,5 +49,14 @@ public class Article extends BaseEntity {
 
     public void removeComment(Comment comment) {
         comments.remove(comment);
+    }
+
+    public void addTag(String contents) {
+        Tag tag = Tag.builder()
+                .article(this)
+                .content(content)
+                .build();
+
+        tags.add(tag);
     }
 }

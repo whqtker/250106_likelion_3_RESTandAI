@@ -104,6 +104,10 @@ public class NotProd {
                 article3.addComment(member1, "댓글11");
                 article3.addComment(member1, "댓글12");
 
+                article1.addTag("자바");
+                article1.addTag("백엔드");
+                article2.addTag("프레임워크");
+                article4.addTag("자바");
             }
         };
     }
