@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true) // 읽기 전용 트랜잭션, 따로 트랜잭션이 붙은 메서드는 해당 X
 public class ArticleService {
     private final ArticleRepository articleRepository;
 
@@ -36,7 +36,10 @@ public class ArticleService {
     public RsData<Article> modify(Article article, String title, String content) {
         article.setTitle(title);
         article.setContent(content);
-        articleRepository.save(article);
+
+        // JPA의 영속성 컨텍스트가 변경을 감지하여 알아서 update 쿼리를 날려줌: dirty checking
+        // articleRepository.save(article);
+
         return RsData.of("200", "글 수정 성공", article);
     }
 

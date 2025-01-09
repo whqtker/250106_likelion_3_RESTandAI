@@ -2,10 +2,12 @@ package ai.OpenAI.domain.article.service;
 
 import ai.OpenAI.domain.article.entity.Article;
 import ai.OpenAI.domain.comment.entity.Comment;
+import ai.OpenAI.domain.comment.service.CommentService;
 import ai.OpenAI.domain.global.rsData.RsData;
 import ai.OpenAI.domain.global.ut.Ut;
 import ai.OpenAI.domain.member.entity.Member;
 import ai.OpenAI.domain.member.service.MemberService;
+import ai.OpenAI.domain.tag.entity.Tag;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -24,6 +29,8 @@ public class ArticleServiceTest {
     private ArticleService articleService;
     @Autowired
     private MemberService memberService;
+    @Autowired
+    private CommentService commentService;
 
     @DisplayName("글 쓰기")
     @Test
@@ -55,7 +62,7 @@ public class ArticleServiceTest {
     void t4() {
         Article article = articleService.findById(1L).getData();
 
-        Ut.thread.sleep(1000);
+        //Ut.thread.sleep(1000);
 
         articleService.modify(article, "수정된 제목", "수정된 내용");
 
@@ -95,4 +102,48 @@ public class ArticleServiceTest {
         Comment lastComment = article.getComments().get(article.getComments().size() - 1);
         article.removeComment(lastComment);
     }
+
+    @DisplayName("1번 게시물의 태그(String)를 반환한다.")
+    @Test
+    void t9() {
+        Article article1 = articleService.findById(1L).getData();
+
+        String tagsStr = article1.getTags().stream()
+                .map(tag -> "#" + tag.getContent())
+                .collect(Collectors.joining(" "));
+
+        assertThat(tagsStr).isEqualTo("#자바 #백엔드");
+    }
+
+    @DisplayName("1번 게시물 toString")
+    @Test
+    void t10() {
+        Article article1 = articleService.findById(1L).getData();
+
+        System.out.println(article1);
+    }
+
+//    @DisplayName("1번 회원이 작성한 댓글들")
+//    @Test
+//    void t11() {
+//        List<Comment> articleComments = CommentService.findByAuthorId(1L);
+//
+//        assertThat(articleComments.size()).isGreaterThan(0);
+//    }
+
+//    @DisplayName("1번 회원이 작성한 태그들")
+//    @Test
+//    void t12() {
+//        List<ArticleTag> articleTags = articleTagService.findByAuthorId(1L);
+//
+//        assertThat(articleTags.size()).isGreaterThan(0);
+//    }
+//
+//    @DisplayName("아이디가 user1 인 회원이 작성한 태그들")
+//    @Test
+//    void t13() {
+//        List<ArticleTag> articleTags = articleTagService.findByAuthorUsername("user1");
+//
+//        assertThat(articleTags.size()).isGreaterThan(0);
+//    }
 }
