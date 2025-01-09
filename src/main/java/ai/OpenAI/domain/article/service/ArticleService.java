@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true) // 읽기 전용 트랜잭션, 따로 트랜잭션이 붙은 메서드는 해당 X
@@ -50,5 +52,9 @@ public class ArticleService {
 
         // 마찬가지로 dirty checking
         return RsData.of("200", "댓글 수정 성공", comment);
+    }
+
+    public RsData<List<Article>> findAll(){
+        return RsData.of("200", "글 전체 조회 성공", articleRepository.findAll());
     }
 }

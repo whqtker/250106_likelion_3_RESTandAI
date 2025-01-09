@@ -106,6 +106,16 @@ public class ArticleServiceTest {
         article.removeComment(lastComment);
     }
 
+    @DisplayName("게시물 별 댓글 수 출력")
+    @Test
+    void t8() {
+        List<Article> articles = articleService.findAll().getData();
+        articles.forEach(article -> {
+            System.out.println("게시물 번호: " + article.getId());
+            System.out.println("댓글 수: " + article.getComments().size());
+        });
+    }
+
     @DisplayName("1번 게시물의 태그(String)를 반환한다.")
     @Test
     void t9() {
