@@ -72,7 +72,7 @@ public class ArticleServiceTest {
     }
 
     @DisplayName("2번 글에 댓글들을 추가한다.")
-    @Test
+    @Test // 테스트는 기본적으로 Rollback 되기 때문에, 테스트 결과가 DB에 반영되지 않음.
     @Rollback(false) // 테스트 종료 후 롤백하지 않음, 즉, 결과에 반영함.
     void t5() {
         Member member1 = memberService.findById(1L).getData();
