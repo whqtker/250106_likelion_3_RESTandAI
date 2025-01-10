@@ -7,11 +7,14 @@ import ai.OpenAI.domain.member.dto.MemberRequest;
 import ai.OpenAI.domain.member.entity.Member;
 import ai.OpenAI.domain.member.service.MemberService;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,18 +41,56 @@ public class ApiV1MemberController {
 
         // 토큰 생성
         String token = jwtProvider.genAccessToken(member);
-        response.addCookie(new Cookie("accessToken", token));
+
+        // 응답 데이터에 accessToken이라는 이름으로 토큰 발급
+        Cookie cookie = new Cookie("accessToken", token);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(60 * 60);
+
+        response.addCookie(cookie);
+
+        String refreshToken = member.getRefreshToken();
+        Cookie refreshTokenCookie  = new Cookie("refreshToken", refreshToken);
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setSecure(true);
+        refreshTokenCookie.setPath("/");
+        refreshTokenCookie.setMaxAge(60 * 60);
+        response.addCookie(refreshTokenCookie);
 
         return new RsData<>("200", "로그인 성공");
     }
 
     @PostMapping("/logout")
-    public void logout() {
-        System.out.println("logout");
+    public RsData<Void> logout(HttpServletResponse response) {
+        // 응답 데이터에 accessToken 이름으로 토큰을 발급
+        Cookie cookie = new Cookie("accessToken", null);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        Cookie refreshTokenCookie  = new Cookie("refreshToken", null);
+        refreshTokenCookie.setPath("/");
+        refreshTokenCookie.setMaxAge(0);
+        response.addCookie(refreshTokenCookie);
+        return new RsData<>("200", "로그아웃에 성공하였습니다.");
     }
 
     @GetMapping("/mypage")
-    public void mypage() {
-        System.out.println("mypage");
+    public RsData<MemberDto> mypage(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        String accessToken = "";
+
+        for(Cookie cookie : cookies) {
+            if(cookie.getName().equals("accessToken")) {
+                accessToken = cookie.getValue();
+            }
+        }
+
+        Map<String, Object> claims = jwtProvider.getClaims(accessToken);
+        String userName = (String) claims.get("userName");
+
+        Member member = memberService.getMember(userName);
+        return new RsData<>("200", "마이페이지 조회 성공", new MemberDto(member));
     }
 }

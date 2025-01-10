@@ -26,6 +26,9 @@ public class Member extends BaseEntity {
     @JsonIgnore
     private String password;
 
+    @JsonIgnore
+    private String refreshToken;
+
 //    @OneToMany(mappedBy = "author")
 //    private List<Article> articles;
 //
