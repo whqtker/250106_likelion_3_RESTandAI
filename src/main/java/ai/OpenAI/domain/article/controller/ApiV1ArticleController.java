@@ -19,12 +19,12 @@ public class ApiV1ArticleController {
 
     // Read
     @GetMapping
-    public void getArticle() {
+    public void getArticles() {
         articleService.findAll();
     }
 
     @GetMapping("/{id}")
-    public void getArticles(@PathVariable("id") Long id) {
+    public void getArticle(@PathVariable("id") Long id) {
         articleService.findById(id);
 
     }
