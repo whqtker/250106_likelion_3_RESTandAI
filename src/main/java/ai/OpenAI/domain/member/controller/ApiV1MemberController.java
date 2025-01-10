@@ -1,12 +1,14 @@
 package ai.OpenAI.domain.member.controller;
 
+import ai.OpenAI.domain.global.rsData.RsData;
+import ai.OpenAI.domain.member.dto.MemberDto;
+import ai.OpenAI.domain.member.dto.MemberRequest;
+import ai.OpenAI.domain.member.entity.Member;
 import ai.OpenAI.domain.member.service.MemberService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -15,8 +17,10 @@ public class ApiV1MemberController {
     private final MemberService memberService;
 
     @PostMapping("/signup")
-    public void signup() {
-        System.out.println("signup");
+    public RsData<MemberDto> signup(@Valid @RequestBody MemberRequest memberRequest) {
+        Member member = memberService.join(memberRequest.getUserName(), memberRequest.getPassword());
+
+        return RsData.of("200", "회원가입 성공", new MemberDto(member));
     }
 
     @PostMapping("/signout")

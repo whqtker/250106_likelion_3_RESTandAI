@@ -4,25 +4,32 @@ import ai.OpenAI.domain.global.rsData.RsData;
 import ai.OpenAI.domain.member.entity.Member;
 import ai.OpenAI.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public RsData<Member> join(String userName, String password) {
-        Member member = Member.builder()
+    public Member join(String userName, String password) {
+        Member member = memberRepository.findByUserName(userName);
+        if(member != null) {
+            throw new IllegalArgumentException("이미 존재하는 회원입니다.");
+        }
+
+        Member newMember = Member.builder()
                 .userName(userName)
-                .password(password)
+                .password(passwordEncoder.encode(password)) // 단방향 암호화
                 .build();
 
-        memberRepository.save(member);
-        return RsData.of("200", "%s님 회원가입 성공".formatted(userName), member);
+        return memberRepository.save(newMember);
     }
 
-    public RsData<Member> findById(Long id) {
-        Member member = memberRepository.findById(id).orElse(null);
-        return RsData.of("200", "회원 조회 성공", member);
+    public Optional<Member> findById(Long id) {
+        return memberRepository.findById(id);
     }
 }
