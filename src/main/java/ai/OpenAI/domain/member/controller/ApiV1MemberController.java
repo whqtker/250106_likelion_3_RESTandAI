@@ -1,10 +1,13 @@
 package ai.OpenAI.domain.member.controller;
 
+import ai.OpenAI.domain.global.jwt.JwtProvider;
 import ai.OpenAI.domain.global.rsData.RsData;
 import ai.OpenAI.domain.member.dto.MemberDto;
 import ai.OpenAI.domain.member.dto.MemberRequest;
 import ai.OpenAI.domain.member.entity.Member;
 import ai.OpenAI.domain.member.service.MemberService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/members")
 public class ApiV1MemberController {
     private final MemberService memberService;
+    private final JwtProvider jwtProvider;
 
     @PostMapping("/signup")
     public RsData<MemberDto> signup(@Valid @RequestBody MemberRequest memberRequest) {
@@ -29,9 +33,14 @@ public class ApiV1MemberController {
     }
 
     @PostMapping("/login")
-    public void login(@Valid @RequestBody MemberRequest memberRequest) {
+    public RsData<Void> login(@Valid @RequestBody MemberRequest memberRequest, HttpServletResponse response) {
         Member member = memberService.getMember(memberRequest.getUserName());
-        System.out.println("login");
+
+        // 토큰 생성
+        String token = jwtProvider.genAccessToken(member);
+        response.addCookie(new Cookie("accessToken", token));
+
+        return new RsData<>("200", "로그인 성공");
     }
 
     @PostMapping("/logout")
