@@ -54,6 +54,17 @@ public class ArticleService {
         return RsData.of("200", "댓글 수정 성공", comment);
     }
 
+    @Transactional
+    public RsData<Article> delete(Long id) {
+        Article article = articleRepository.findById(id).orElse(null);
+        if(article == null){
+            return RsData.of("500", "글 삭제 불가능: 존재하지 않음", null);
+        }
+
+        articleRepository.delete(article);
+        return RsData.of("200", "글 삭제 성공", article);
+    }
+
     public RsData<List<Article>> findAll(){
         return RsData.of("200", "글 전체 조회 성공", articleRepository.findAll());
     }

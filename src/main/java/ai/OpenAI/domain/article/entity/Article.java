@@ -4,6 +4,7 @@ import ai.OpenAI.domain.comment.entity.Comment;
 import ai.OpenAI.domain.global.jpa.BaseEntity;
 import ai.OpenAI.domain.member.entity.Member;
 import ai.OpenAI.domain.tag.entity.Tag;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -25,16 +26,19 @@ public class Article extends BaseEntity {
 
     // profile에서 N+1 문제를 해결했으므로
     @ManyToOne(fetch = FetchType.LAZY) // default: FetchType.EAGER
+    @JsonIgnore // 일단 임시
     private Member author;
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true) // default: FetchType.LAZY
     @Builder.Default // 빌더에 기본값 포함, 없으면 comments가 null로 초기화됨.
     @ToString.Exclude // 무한 순환 참조를 방지하기 위해
+    @JsonIgnore // 일단 임시
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     @ToString.Exclude // 무한 순환 참조를 방지하기 위해
+    @JsonIgnore // 일단 임시
     private List<Tag> tags = new ArrayList<>();
 
     public void addComment(Member member, String content) {
