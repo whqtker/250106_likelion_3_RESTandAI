@@ -9,7 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,8 +30,8 @@ public class ArticleService {
         return article;
     }
 
-    public Article findById(Long id) {
-        return articleRepository.findById(id).orElse(null);
+    public Optional<Article> findById(Long id) {
+        return articleRepository.findById(id);
     }
 
     @Transactional

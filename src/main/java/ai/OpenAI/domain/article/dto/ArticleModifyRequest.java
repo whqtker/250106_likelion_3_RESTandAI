@@ -1,11 +1,10 @@
 package ai.OpenAI.domain.article.dto;
 
-import ai.OpenAI.domain.article.entity.Article;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class ArticleWriteRequest {
+public class ArticleModifyRequest {
     @NotBlank
     private String title;
 
