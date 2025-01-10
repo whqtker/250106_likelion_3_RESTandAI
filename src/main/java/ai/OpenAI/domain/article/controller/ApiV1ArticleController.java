@@ -1,5 +1,6 @@
 package ai.OpenAI.domain.article.controller;
 
+import ai.OpenAI.domain.article.dto.*;
 import ai.OpenAI.domain.article.entity.Article;
 import ai.OpenAI.domain.article.service.ArticleService;
 import ai.OpenAI.domain.global.rsData.RsData;
@@ -16,30 +17,47 @@ public class ApiV1ArticleController {
 
     // Create
     @PostMapping
-    public RsData<Article> postArticle(@RequestBody Article article) {
-        return articleService.write(article.getAuthor().getId(), article.getTitle(), article.getContent());
+    public RsData<ArticleWriteResponse> postArticle(@RequestBody ArticleWriteRequest articleWriteRequest) {
+        Article article = articleService.write(articleWriteRequest.getTitle(), articleWriteRequest.getContent());
+        ArticleDto articleDto = new ArticleDto(article);
+
+        return RsData.of("200", "글 작성 성공", new ArticleWriteResponse(articleDto));
     }
 
     // Read
     @GetMapping
-    public RsData<List<Article>> getArticles() {
-        return articleService.findAll();
+    public RsData<ArticlesResponse> getArticles() {
+        List<Article> articles = articleService.findAll();
+
+        List<ArticleDto> articleDtos = articles.stream()
+                .map(ArticleDto::new)
+                .toList();
+
+        return RsData.of("200", "글 목록 조회 성공", new ArticlesResponse(articleDtos));
     }
 
     @GetMapping("/{id}")
-    public RsData<Article> getArticle(@PathVariable("id") Long id) {
-        return articleService.findById(id);
+    public RsData<ArticleResponse> getArticle(@PathVariable("id") Long id) {
+        Article article = articleService.findById(id);
+        ArticleDto articleDto = new ArticleDto(article);
+        return RsData.of("200", "글 조회 성공", new ArticleResponse(articleDto));
     }
 
     // Update
     @PatchMapping("/{id}")
-    public RsData<Article> patchArticle(@PathVariable("id") Long id, @RequestBody Article article) {
-        return this.articleService.modify(article, article.getTitle(), article.getContent());
+    public RsData<ArticleDto> updateArticle(@PathVariable("id") Long id, @RequestBody Article article) {
+        Article modifiedArticle = this.articleService.modify(article, article.getTitle(), article.getContent());
+        return RsData.of(
+                "200",
+                "게시글이 수정에 성공하였습니다.",
+                new ArticleDto(modifiedArticle)
+        );
     }
 
     // Delete
     @DeleteMapping("/{id}")
     public RsData<Article> deleteArticle(@PathVariable("id") Long id) {
-        return articleService.delete(id);
+        Article article = articleService.delete(id);
+        return RsData.of("200", "글 삭제 성공", article);
     }
 }
