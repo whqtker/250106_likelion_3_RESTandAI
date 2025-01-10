@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/members")
 public class ApiV1MemberController {
@@ -19,17 +19,18 @@ public class ApiV1MemberController {
     @PostMapping("/signup")
     public RsData<MemberDto> signup(@Valid @RequestBody MemberRequest memberRequest) {
         Member member = memberService.join(memberRequest.getUserName(), memberRequest.getPassword());
-
         return new RsData<>("200", "회원가입 성공", new MemberDto(member));
     }
 
-    @PostMapping("/signout")
-    public void signout() {
-        System.out.println("signout");
+    @PostMapping("/signout/{userName}")
+    public RsData<MemberDto> signout(@RequestParam("userName") String userName) {
+        Member deletedMember = memberService.delete(userName);
+        return new RsData<>("200", "회원 탈퇴 성공", new MemberDto(deletedMember));
     }
 
     @PostMapping("/login")
-    public void login() {
+    public void login(@Valid @RequestBody MemberRequest memberRequest) {
+        Member member = memberService.getMember(memberRequest.getUserName());
         System.out.println("login");
     }
 

@@ -32,4 +32,20 @@ public class MemberService {
     public Optional<Member> findById(Long id) {
         return memberRepository.findById(id);
     }
+
+    public Member delete(String userName) {
+        Member member = memberRepository.findByUserName(userName);
+        memberRepository.delete(member);
+        return member;
+    }
+
+    public Member getMember(String userName) {
+        Member member = memberRepository.findByUserName(userName);
+        if(member == null) {
+            throw new IllegalArgumentException("존재하지 않는 회원입니다.");
+        }
+        if(!passwordEncoder.matches(password, member.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+    }
 }
