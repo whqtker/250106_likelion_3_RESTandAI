@@ -25,24 +25,24 @@ public class ApiV1ChatRoomController {
     public RsData<ChatRoomsResponse> showRooms(){
         List<ChatRoomDto> chatRooms = this.chatRoomService.findAll();
 
-        return RsData.of("200", "채팅방 목록 조회 완료", new ChatRoomsResponse(chatRooms));
+        return new RsData<>("200", "채팅방 목록 조회 완료", new ChatRoomsResponse(chatRooms));
     }
 
     @GetMapping("/{roomId}")
     public RsData<ChatRoomResponse> showRoomById(@PathVariable("roomId") Long id){
         ChatRoom chatRoom = this.chatRoomService.findById(id);
         if(chatRoom == null){
-            return RsData.of("500", "%d번 채팅방 조회 불가능: 존재하지 않음".formatted(id), null);
+            return new RsData<>("500", "%d번 채팅방 조회 불가능: 존재하지 않음".formatted(id), null);
         }
 
         ChatRoomDto chatRoomDto = new ChatRoomDto(chatRoom);
-        return RsData.of("200", "%d번 채팅방 조회 완료".formatted(id) , new ChatRoomResponse(chatRoomDto));
+        return new RsData<>("200", "%d번 채팅방 조회 완료".formatted(id) , new ChatRoomResponse(chatRoomDto));
     }
 
     @PostMapping("")
     public RsData<ChatRoomCreateResponse> createRoom(@Valid @RequestBody ChatRoomCreateRequest chatRoomCreateRequest){
         ChatRoom chatRoom = this.chatRoomService.save(chatRoomCreateRequest.getName());
 
-        return RsData.of("200", "채팅방 생성 완료", new ChatRoomCreateResponse(chatRoom));
+        return new RsData<>("200", "채팅방 생성 완료", new ChatRoomCreateResponse(chatRoom));
     }
 }

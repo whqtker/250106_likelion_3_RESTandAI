@@ -25,24 +25,24 @@ public class ApiV1ChatMessageController {
     public RsData<ChatMessagesResponse> getMessagesAfterMessageId(@PathVariable("roomId") Long roomId, @RequestParam("afterChatMessageId") Long afterChatMessageId) {
         ChatRoom chatRoom = chatRoomService.findById(roomId);
         if(chatRoom == null) {
-            return RsData.of("500", "%d번 채팅방의 %d 이후 메시지 조회 실패".formatted(roomId, afterChatMessageId), null);
+            return new RsData<>("500", "%d번 채팅방의 %d 이후 메시지 조회 실패".formatted(roomId, afterChatMessageId), null);
         }
 
         List<ChatMessageDto> chatMessageDtos = chatMessageService.findMessagesAfterId(chatRoom, afterChatMessageId);
 
-        return RsData.of("200", "%d번 채팅방의 %d 이후 메시지 조회 완료".formatted(roomId, afterChatMessageId), new ChatMessagesResponse(chatMessageDtos));
+        return new RsData<>("200", "%d번 채팅방의 %d 이후 메시지 조회 완료".formatted(roomId, afterChatMessageId), new ChatMessagesResponse(chatMessageDtos));
     }
 
     @PostMapping("/{roomId}/messages")
     public RsData<ChatMessagesCreateResponse> writeMessage(@PathVariable("roomId") Long roomId, @RequestBody ChatMessagesCreateRequest chatMessagesRequest) {
         ChatRoom chatRoom = chatRoomService.findById(roomId);
         if(chatRoom == null) {
-            return RsData.of("500", "%d번 채팅방에 메시지 작성 실패".formatted(roomId), null);
+            return new RsData<>("500", "%d번 채팅방에 메시지 작성 실패".formatted(roomId), null);
         }
 
         ChatMessage chatMessage = chatMessageService.save(chatRoom, chatMessagesRequest.getWriterName(), chatMessagesRequest.getMessage());
 
-        return RsData.of("200", "%d번 채팅방에 메시지 작성 완료".formatted(roomId), new ChatMessagesCreateResponse(chatMessage));
+        return new RsData<>("200", "%d번 채팅방에 메시지 작성 완료".formatted(roomId), new ChatMessagesCreateResponse(chatMessage));
 
     }
 }

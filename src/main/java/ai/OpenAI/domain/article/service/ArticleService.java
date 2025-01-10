@@ -51,7 +51,7 @@ public class ArticleService {
         comment.setContent(content);
 
         // 마찬가지로 dirty checking
-        return RsData.of("200", "댓글 수정 성공", comment);
+        return new RsData<>("200", "댓글 수정 성공", comment);
     }
 
     @Transactional

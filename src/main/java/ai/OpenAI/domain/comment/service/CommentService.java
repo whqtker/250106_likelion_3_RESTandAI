@@ -16,6 +16,6 @@ public class CommentService {
     public RsData<List<Comment>> findByAuthorId(Long authorId) {
         List<Comment> comments = commentRepository.findByAuthorId(authorId);
 
-        return RsData.of("200", "댓글 조회 성공", comments);
+        return new RsData<>("200", "댓글 조회 성공", comments);
     }
 }

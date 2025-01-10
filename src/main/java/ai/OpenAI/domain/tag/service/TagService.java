@@ -17,12 +17,12 @@ public class TagService {
     public RsData<List<Tag>> findByAuthorId(Long authorId) {
         List<Tag> tags = tagRepository.findByAuthorId(authorId);
 
-        return RsData.of("200", "댓글 조회 성공", tags);
+        return new RsData<>("200", "댓글 조회 성공", tags);
     }
 
     public RsData<List<Tag>> findByAuthorUserName(String userName) {
         List<Tag> tags = tagRepository.findByAuthorUserName(userName);
 
-        return RsData.of("200", "댓글 조회 성공", tags);
+        return new RsData<>("200", "댓글 조회 성공", tags);
     }
 }
